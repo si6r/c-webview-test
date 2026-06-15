@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+  <style>
+    html,body{height:100%}
+    body{margin:0;display:flex;align-items:center;justify-content:center;
+      background:#868e96;color:#fff;font:600 18px -apple-system,system-ui,sans-serif;text-align:center}
+  </style>
+</head>
+<body>
+  white / decoy
+  <script>
+    beacon('white:rendered = white-страница отрисовалась', 'inFrame=' + (self !== top), true);
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>ТЕСТ 2 — простой iframe</title>
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+</head>
+<body style="margin:0;background:#eee">
+  <script>
+    beacon('simple:start');
+    var T = getParam('offer', 'offer.html');
+    var loaded = false;
+    var f = document.createElement('iframe');
+    f.src = T;
+    f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;background:#fff';
+    f.addEventListener('load', function () {
+      loaded = true;
+      beacon('simple:iframe-onload', null, true);
+    }, { once: true });
+    f.addEventListener('error', function () {
+      beacon('simple:iframe-ERROR', null, false);
+    });
+    document.body.appendChild(f);
+    beacon('simple:iframe-appended');
+    setTimeout(function () {
+      beacon(loaded ? 'simple:OK-после-4s' : 'simple:TIMEOUT-4s-NO-LOAD', null, loaded);
+    }, 4000);
+    addEventListener('pagehide', function () { beacon('simple:pagehide', 'loaded=' + loaded); });
+  </script>
+</body>
+</html>

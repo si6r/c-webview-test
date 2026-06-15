@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>ТЕСТ 1 — сложный iframe</title>
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+</head>
+<body style="margin:0;background:#eee">
+  <div id="container" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#fff"></div>
+  <script>
+    beacon('complex:start');
+    var T = getParam('offer', 'offer.html');
+    var B = getParam('white', 'white.html');
+    var loaded = false;
+    try {
+      var h = document.getElementById('container');
+      beacon('complex:before-attachShadow');
+      var s = h.attachShadow({ mode: 'closed' });
+      beacon('complex:attachShadow-OK', null, true);
+      var o = document.createElement('iframe');
+      o.src = T;
+      o.style.cssText = 'width:100%;height:100%;border:none;background:#fff';
+      o.addEventListener('load', function () {
+        loaded = true;
+        beacon('complex:offer-iframe-onload', null, true);
+        var w = document.createElement('iframe');
+        w.src = B;
+        w.style.cssText = 'width:1px;height:1px;position:absolute;top:-9999px;left:-9999px';
+        w.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
+        document.body.appendChild(w);
+      }, { once: true });
+      o.addEventListener('error', function () {
+        beacon('complex:offer-iframe-ERROR', null, false);
+      });
+      window.addEventListener('message', function (e) {
+        if (!e || !e.data) return;
+        var u = e.data.u || e.data.url;
+        if (u && /^(https?|tg|tel|sms|mailto|intent|market|whatsapp|viber):/i.test(u)) {
+          beacon('complex:postMessage-navigate', u);
+        }
+      });
+      s.appendChild(o);
+      beacon('complex:offer-iframe-appended');
+    } catch (err) {
+      beacon('complex:EXCEPTION', (err && err.message) || String(err), false);
+    }
+    setTimeout(function () {
+      if (!loaded) beacon('complex:TIMEOUT-4s-NO-LOAD = вероятно белый экран', null, false);
+      else beacon('complex:OK-после-4s', null, true);
+    }, 4000);
+    addEventListener('pagehide', function () { beacon('complex:pagehide', 'loaded=' + loaded); });
+  </script>
+</body>
+</html>
