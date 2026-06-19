@@ -12,7 +12,7 @@
   <div id="container"></div>
   <script>
     var mode = getParam('mode', 'complex');
-    var bridge = getParam('bridge', mode === 'inline' ? 'inline' : mode === 'fix' ? 'sync' : 'async');
+    var bridge = getParam('bridge', mode === 'inline' ? 'inline' : mode === 'fix' ? 'sync' : mode === 'plainframe' ? 'none' : 'async');
     var cta = getParam('cta', '');
     var offerUrl = 'dl-offer.html?bridge=' + bridge + '&delay=' + getParam('delay', '1500') + (cta ? '&cta=' + encodeURIComponent(cta) : '');
     beacon('loader:start mode=' + mode);
@@ -30,13 +30,18 @@
           window.location.href = u;
         }
       });
-      var s = h.attachShadow({ mode: 'closed' });
       var o = document.createElement('iframe');
       o.src = offerUrl;
       o.style.cssText = 'width:100%;height:100%;border:none;background:#fff';
       o.addEventListener('load', function () { beacon('loader:offer-iframe-onload', null, true); });
-      s.appendChild(o);
-      beacon('loader:offer-iframe-appended (closed Shadow DOM) mode=' + mode);
+      if (mode === 'plainframe') {
+        h.appendChild(o);
+        beacon('loader:offer в ОБЫЧНОМ iframe (виден TikTok) mode=' + mode);
+      } else {
+        var s = h.attachShadow({ mode: 'closed' });
+        s.appendChild(o);
+        beacon('loader:offer в CLOSED Shadow DOM mode=' + mode, null, true);
+      }
     }
   </script>
 </body>

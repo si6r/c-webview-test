@@ -47,6 +47,9 @@
       document.getElementById('cta').setAttribute('target', '_top');
       beacon('bridge-top: CTA target=_top (нативный top-клик, без скрипта) inFrame=' + inFrame, null, true);
     }
+    else if (bridge === 'none') {
+      beacon('bridge-none: нативная ссылка БЕЗ перехвата (навигирует свой фрейм / inside Shadow DOM) inFrame=' + inFrame, null, true);
+    }
     var ctaUrl = getParam('cta', '');
     if (ctaUrl) { document.getElementById('cta').setAttribute('href', ctaUrl); beacon('offer:cta-override ' + ctaUrl); }
     document.getElementById('cta').addEventListener('click', function () { beacon('offer:cta-tapped'); });
