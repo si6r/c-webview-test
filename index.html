@@ -3,60 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-  <title>CUBBBE · WebView-тест доставки</title>
-  <script src="config.js"></script>
+  <title>тест</title>
   <style>
-    body{font:16px/1.5 -apple-system,system-ui,sans-serif;margin:0;background:#111;color:#eee;padding:18px}
-    h1{font-size:19px;margin:0 0 4px}
-    .sub{color:#aaa;font-size:13px;margin-bottom:18px}
-    a.btn{display:block;text-decoration:none;color:#fff;padding:18px;border-radius:14px;margin:12px 0;font-weight:600;text-align:center}
-    .b1{background:#c92a2a}.b2{background:#2b8a3e}.b3{background:#1971c2}.b4{background:#6741d9}.b5{background:#0c8599}.b6{background:#e8590c}.b7{background:#2f9e44}.b8{background:#a61e4d}.b9{background:#5f3dc4}
-    .b1 small,.b2 small{display:block;font-weight:400;font-size:13px;opacity:.85;margin-top:4px}
-    .status{font-size:13px;padding:10px;border-radius:10px;margin-bottom:14px}
-    .ok{background:#143d1e;color:#8ce99a}.warn{background:#3d2814;color:#ffd8a8}
-    ol{padding-left:20px;color:#ccc;font-size:14px}li{margin:6px 0}
-    code{background:#000;padding:1px 5px;border-radius:4px}
+    body{font:16px -apple-system,system-ui,sans-serif;margin:0;background:#111;padding:14px}
+    a{display:block;text-decoration:none;color:#fff;padding:20px;border-radius:14px;margin:10px 0;font-weight:700;text-align:center;font-size:19px;background:#2b5bd7}
   </style>
 </head>
 <body>
-  <h1>CUBBBE · тест доставки в WebView</h1>
-  <div class="sub">⚠️ Открывать <b>через предпросмотр рекламы TikTok</b> (или запущенную рекламу) — <b>НЕ</b> через ссылку в профиле/bio: там запрет на редиректы, тесты не сработают. Тапай тесты по очереди.</div>
-
-  <div id="beaconStatus" class="status warn">Проверяю логгер…</div>
-
-  <a class="btn b1" href="complex.html">ТЕСТ 1 — «Сложный» iframe<small>как сейчас в cubbbe: Shadow DOM + postMessage</small></a>
-  <a class="btn b2" href="simple.html">ТЕСТ 2 — «Простой» iframe<small>как у AdSpect / Cloaking.house</small></a>
-  <a class="btn b3" href="dl.html?mode=complex">ТЕСТ 3 — Диплинк: iframe + async-мост<small>воспроизводит баг (tg:// заперт, если тапнуть быстро)</small></a>
-  <a class="btn b4" href="dl.html?mode=inline">ТЕСТ 4 — Диплинк: iframe + inline-мост<small>предлагаемый фикс</small></a>
-  <a class="btn b5" href="dl.html?mode=redirect">ТЕСТ 5 — Диплинк: redirect (без iframe)<small>воркэраунд</small></a>
-  <a class="btn b6" href="tgdirect.html">ТЕСТ 6 — Прямой tg:// (gesture, без клоаки)<small>открывается ли Telegram вообще из TikTok-вебвью</small></a>
-  <a class="btn b7" href="dl.html?mode=fix">ТЕСТ 7 — ФИКС: Shadow DOM + inline sync-мост<small>контент спрятан (клоака цела) + tg:// вылезает в живом тапе</small></a>
-  <a class="btn b8" href="dl.html?mode=fix&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 8 — ФИКС + реальный kt-rdr<small>sync-мост (top.location.href), реальный канал</small></a>
-  <a class="btn b9" href="dl.html?mode=fix&bridge=top&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 9 — ФИКС: нативный target=_top<small>top-клик без скрипта, реальный канал</small></a>
-  <div class="sub" style="margin-top:16px;border-top:1px solid #333;padding-top:14px">— Матрица: ГДЕ срабатывает диплинк (все на твой реальный канал) —</div>
-  <a class="btn b8" href="dl.html?mode=complex&bridge=none&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 10 — Shadow DOM + ВНУТРИ (kt-rdr)<small>диплинк внутри Shadow DOM, без вывода на top (обход-гипотеза)</small></a>
-  <a class="btn b9" href="dl.html?mode=complex&bridge=none&cta=tg%3A%2F%2Fjoin%3Finvite%3Diuth-kfeGrkzNWI0">ТЕСТ 11 — Shadow DOM + ВНУТРИ (прямой tg://)<small>прямой tg:// внутри Shadow DOM (минуя kt-rdr)</small></a>
-  <a class="btn b7" href="dl.html?mode=plainframe&bridge=none&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 12 — Обычный iframe + ВНУТРИ (kt-rdr)<small>не Shadow DOM — изолировать, важен ли именно Shadow DOM</small></a>
-  <a class="btn b2" href="dl.html?mode=redirect&bridge=none&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 13 — БЕЗ iframe (top) + kt-rdr<small>контроль: «прямой лендинг»</small></a>
-  <a class="btn b2" href="dl.html?mode=redirect&bridge=none&cta=tg%3A%2F%2Fjoin%3Finvite%3Diuth-kfeGrkzNWI0">ТЕСТ 14 — БЕЗ iframe (top) + прямой tg://<small>контроль: прямой tg:// на твой канал</small></a>
-
-  <ol>
-    <li>На каждом тесте смотри <b>чёрную панель сверху</b> и страницу <code>webhook.site</code> на компьютере.</li>
-    <li><b>Зелёный «ОФФЕР ВИДЕН ✅»</b> + строка <code>offer:rendered</code> = доставка сработала.</li>
-    <li><b>Белый экран</b> и панель замерла на <code>…appended</code> / <code>TIMEOUT</code> без <code>offer:rendered</code> = баг воспроизведён.</li>
-    <li>Если ТЕСТ 1 = белый, а ТЕСТ 2 = оффер → причина в сложном iframe.</li>
-  </ol>
-
-  <script>
-    var s = document.getElementById('beaconStatus');
-    if (window.BEACON_URL && window.BEACON_URL.indexOf('REPLACE-ME') === -1) {
-      s.className = 'status ok';
-      s.textContent = '✅ Логгер настроен. Пинги пойдут на твой webhook.site.';
-      try { new Image().src = window.BEACON_URL + (window.BEACON_URL.indexOf('?')>-1?'&':'?') + 'sid=index&step=menu-opened&t=' + Date.now(); } catch(e){}
-    } else {
-      s.className = 'status warn';
-      s.textContent = '⚠️ Логгер НЕ настроен — впиши свой webhook.site URL в config.js (тесты всё равно покажут чёрную панель на экране).';
-    }
-  </script>
+  <a href="complex.html">ТЕСТ 1</a>
+  <a href="simple.html">ТЕСТ 2</a>
+  <a href="dl.html?mode=complex">ТЕСТ 3</a>
+  <a href="dl.html?mode=inline">ТЕСТ 4</a>
+  <a href="dl.html?mode=redirect">ТЕСТ 5</a>
+  <a href="tgdirect.html">ТЕСТ 6</a>
+  <a href="dl.html?mode=fix">ТЕСТ 7</a>
+  <a href="dl.html?mode=fix&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 8</a>
+  <a href="dl.html?mode=fix&bridge=top&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 9</a>
+  <a href="dl.html?mode=complex&bridge=none&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 10</a>
+  <a href="dl.html?mode=complex&bridge=none&cta=tg%3A%2F%2Fjoin%3Finvite%3Diuth-kfeGrkzNWI0">ТЕСТ 11</a>
+  <a href="dl.html?mode=plainframe&bridge=none&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 12</a>
+  <a href="dl.html?mode=redirect&bridge=none&cta=https%3A%2F%2Fkt-rdr.com%2Fldpg%2Fi1hgdzx8anm8%2Fredirect%3Fad_id%3DAAA%26campaign_id%3DBBB%26ttclid%3DTEST123%26cube%3D1">ТЕСТ 13</a>
+  <a href="dl.html?mode=redirect&bridge=none&cta=tg%3A%2F%2Fjoin%3Finvite%3Diuth-kfeGrkzNWI0">ТЕСТ 14</a>
 </body>
 </html>

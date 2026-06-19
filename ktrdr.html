@@ -22,11 +22,11 @@
     var v = document.getElementById('verdict');
     if (inFrame) {
       document.body.style.background = '#c92a2a';
-      v.innerHTML = '❌ ЗАПЕРТО В IFRAME<small>tg:// сработает ВНУТРИ iframe → браузер его блокирует → канал НЕ откроется. Это и есть баг.</small><small><code>' + to + '</code></small>';
+      v.textContent = '🔴 IFRAME';
       beacon('ktrdr:VERDICT trapped-in-iframe (баг)', null, false);
     } else {
       document.body.style.background = '#0a7d2c';
-      v.innerHTML = '✅ TOP-LEVEL<small>tg:// дошёл до верхнего окна → с установленным Telegram канал бы открылся. Мост/режим сработал.</small><small><code>' + to + '</code></small>';
+      v.textContent = '🟢 TOP';
       beacon('ktrdr:VERDICT reached-top-level (ок)', null, true);
     }
     setTimeout(function () {

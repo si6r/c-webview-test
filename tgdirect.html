@@ -16,17 +16,14 @@
   </style>
 </head>
 <body>
-  <div>Прямой tg:// (top-level, в gesture)<br><small>тапни каждую — открывается ли Telegram?</small></div>
-  <a id="a" href="tg://resolve?domain=telegram" onclick="beacon('tgdirect:A anchor-click tg://')">A) ссылка &lt;a href="tg://"&gt;</a>
+  <a id="a" href="tg://resolve?domain=telegram" onclick="beacon('tgdirect:A anchor-click tg://')">A) &lt;a href tg://&gt;</a>
   <button onclick="beacon('tgdirect:B location.href tg://');location.href='tg://resolve?domain=telegram'">B) location.href = tg://</button>
   <button onclick="beacon('tgdirect:C window.open tg://');window.open('tg://resolve?domain=telegram')">C) window.open(tg://)</button>
   <a class="ctrl" href="https://t.me/telegram" onclick="beacon('tgdirect:D t.me https-link (контроль)')">D) https://t.me/telegram (контроль)</a>
   <a href="intent://resolve?domain=telegram#Intent;scheme=tg;package=org.telegram.messenger;end" onclick="beacon('tgdirect:E intent->Telegram напрямую')">E) intent:// → Telegram напрямую (Android)</a>
   <a href="intent://t.me/telegram#Intent;scheme=https;package=com.android.chrome;end" onclick="beacon('tgdirect:F intent->Chrome с t.me')">F) intent:// → Chrome → t.me (Android)</a>
   <a href="x-safari-https://t.me/telegram" onclick="beacon('tgdirect:G x-safari -> Safari (iOS)')">G) x-safari → Safari → t.me (iOS)</a>
-  <small id="info"></small>
   <script>
-    document.getElementById('info').textContent = 'inFrame=' + (self !== top);
     beacon('tgdirect:loaded inFrame=' + (self !== top));
   </script>
 </body>

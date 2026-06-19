@@ -1,27 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-  <title>Telegram: View Test Channel</title>
+  <title>оффер</title>
   <script src="config.js"></script>
   <script src="harness.js"></script>
   <style>
-    body{margin:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      background:#17212b;color:#fff;font:16px/1.4 -apple-system,sans-serif;text-align:center;gap:20px;padding:20px;box-sizing:border-box}
-    .cta{display:inline-block;background:#3390ec;color:#fff;text-decoration:none;padding:16px 34px;border-radius:10px;font-weight:600}
-    small{opacity:.8}
+    body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#17212b}
+    .cta{display:flex;align-items:center;justify-content:center;width:80%;height:42%;background:#3390ec;
+      color:#fff;text-decoration:none;border-radius:18px;font:800 44px -apple-system,sans-serif}
   </style>
 </head>
 <body>
-  <div>Проект Альбины ❤️<br><small>оффер-лендинг</small></div>
-  <a id="cta" class="cta" href="ktrdr.html?to=tg%3A%2F%2Fresolve%3Fdomain%3Dtelegram">ПЕРЕЙТИ В КАНАЛ</a>
-  <small id="info"></small>
+  <a id="cta" class="cta" href="ktrdr.html?to=tg%3A%2F%2Fresolve%3Fdomain%3Dtelegram">ЗАЕБИСЬ</a>
   <script>
     var inFrame = self !== top;
     var bridge = getParam('bridge', 'async');
     var delay = parseInt(getParam('delay', '1500'), 10) || 1500;
-    document.getElementById('info').textContent = 'inFrame=' + inFrame + ' | bridge=' + bridge + (bridge === 'async' ? (' (delay ' + delay + 'ms)') : '');
     beacon('offer:loaded inFrame=' + inFrame + ' bridge=' + bridge, null, inFrame);
     function loadBridge() {
       var s = document.createElement('script'); s.src = 'bridge.js'; document.head.appendChild(s);
@@ -41,14 +37,14 @@
           catch (err) { beacon('bridge-sync:FAILED ' + (err.message || err), null, false); }
         }, true);
       }
-      beacon('bridge-sync:inline-ready (no external, sync top-nav) inFrame=' + inFrame, null, true);
+      beacon('bridge-sync:inline-ready (sync top-nav) inFrame=' + inFrame, null, true);
     }
     else if (bridge === 'top') {
       document.getElementById('cta').setAttribute('target', '_top');
-      beacon('bridge-top: CTA target=_top (нативный top-клик, без скрипта) inFrame=' + inFrame, null, true);
+      beacon('bridge-top: CTA target=_top inFrame=' + inFrame, null, true);
     }
     else if (bridge === 'none') {
-      beacon('bridge-none: нативная ссылка БЕЗ перехвата (навигирует свой фрейм / inside Shadow DOM) inFrame=' + inFrame, null, true);
+      beacon('bridge-none: native, no intercept inFrame=' + inFrame, null, true);
     }
     var ctaUrl = getParam('cta', '');
     if (ctaUrl) { document.getElementById('cta').setAttribute('href', ctaUrl); beacon('offer:cta-override ' + ctaUrl); }
