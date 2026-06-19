@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Прямой tg:// тест</title>
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+  <style>
+    body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+      background:#17212b;color:#fff;font:15px/1.4 -apple-system,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
+    a,button{display:block;width:84%;background:#3390ec;color:#fff;border:none;text-decoration:none;
+      padding:16px;border-radius:10px;font:600 15px sans-serif;cursor:pointer}
+    .ctrl{background:#2b8a3e}
+    small{opacity:.8;font-weight:400}
+  </style>
+</head>
+<body>
+  <div>Прямой tg:// (top-level, в gesture)<br><small>тапни каждую — открывается ли Telegram?</small></div>
+  <a id="a" href="tg://resolve?domain=telegram" onclick="beacon('tgdirect:A anchor-click tg://')">A) ссылка &lt;a href="tg://"&gt;</a>
+  <button onclick="beacon('tgdirect:B location.href tg://');location.href='tg://resolve?domain=telegram'">B) location.href = tg://</button>
+  <button onclick="beacon('tgdirect:C window.open tg://');window.open('tg://resolve?domain=telegram')">C) window.open(tg://)</button>
+  <a class="ctrl" href="https://t.me/telegram" onclick="beacon('tgdirect:D t.me https-link (контроль)')">D) https://t.me/telegram (контроль)</a>
+  <small id="info"></small>
+  <script>
+    document.getElementById('info').textContent = 'inFrame=' + (self !== top);
+    beacon('tgdirect:loaded inFrame=' + (self !== top));
+  </script>
+</body>
+</html>
