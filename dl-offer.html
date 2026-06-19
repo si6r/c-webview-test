@@ -28,6 +28,21 @@
     }
     if (bridge === 'inline') { loadBridge(); }
     else if (bridge === 'async') { setTimeout(loadBridge, delay); }
+    else if (bridge === 'sync') {
+      if (inFrame) {
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a') : null;
+          if (!a) return;
+          var h = a.getAttribute('href') || '';
+          if (!h || h.charAt(0) === '#') return;
+          e.preventDefault();
+          beacon('bridge-sync:top.location SYNC in-gesture ' + h, null, true);
+          try { window.top.location.href = h; }
+          catch (err) { beacon('bridge-sync:FAILED ' + (err.message || err), null, false); }
+        }, true);
+      }
+      beacon('bridge-sync:inline-ready (no external, sync top-nav) inFrame=' + inFrame, null, true);
+    }
     document.getElementById('cta').addEventListener('click', function () { beacon('offer:cta-tapped'); });
   </script>
 </body>

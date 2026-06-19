@@ -12,7 +12,7 @@
   <div id="container"></div>
   <script>
     var mode = getParam('mode', 'complex');
-    var bridge = getParam('bridge', mode === 'inline' ? 'inline' : 'async');
+    var bridge = getParam('bridge', mode === 'inline' ? 'inline' : mode === 'fix' ? 'sync' : 'async');
     var offerUrl = 'dl-offer.html?bridge=' + bridge + '&delay=' + getParam('delay', '1500');
     beacon('loader:start mode=' + mode);
     if (mode === 'redirect') {
