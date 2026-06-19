@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>ТЕСТ 4 — цепочка редиректов</title>
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+  <style>body{margin:0;background:#222}</style>
+</head>
+<body>
+  <script>
+    var hop = parseInt(getParam('hop', '1'), 10) || 1;
+    var cs = getParam('cs') || Math.random().toString(36).slice(2, 7);
+    var T = getParam('offer', 'offer.html');
+    var passOffer = getParam('offer') ? ('&offer=' + encodeURIComponent(T)) : '';
+    beacon('chain:hop' + hop + ' cs=' + cs);
+    if (hop < 3) {
+      setTimeout(function () {
+        location.replace(location.pathname + '?hop=' + (hop + 1) + '&cs=' + cs + passOffer);
+      }, 400);
+    } else {
+      var f = document.createElement('iframe');
+      f.src = T;
+      f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;background:#fff';
+      f.addEventListener('load', function () {
+        beacon('chain:offer-loaded после 3 хопов cs=' + cs, null, true);
+      }, { once: true });
+      document.body.appendChild(f);
+      beacon('chain:hop3 offer-appended cs=' + cs);
+      setTimeout(function () { beacon('chain:финиш cs=' + cs); }, 3000);
+    }
+  </script>
+</body>
+</html>

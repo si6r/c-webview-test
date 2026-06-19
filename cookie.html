@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>ТЕСТ 3 — cookie / PRG</title>
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+  <style>
+    html,body{height:100%}
+    body{margin:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;
+      box-sizing:border-box;font:700 24px/1.4 -apple-system,system-ui,sans-serif;background:#222;color:#fff}
+    small{display:block;font-weight:400;font-size:14px;opacity:.9;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div id="msg">проверяю cookie…</div>
+  <script>
+    var step = getParam('step', '1');
+    var cs = getParam('cs') || Math.random().toString(36).slice(2, 7);
+    if (step === '1') {
+      try { document.cookie = '_cvtest=ok123; path=/; max-age=120; samesite=lax; secure'; } catch (e) {}
+      beacon('cookie:set cs=' + cs, document.cookie || '(пусто)');
+      setTimeout(function () {
+        location.replace(location.pathname + '?step=2&cs=' + cs);
+      }, 400);
+    } else {
+      var has = document.cookie.indexOf('_cvtest=ok123') > -1;
+      beacon('cookie:after-redirect ' + (has ? 'FOUND cookie выжила' : 'NOT FOUND cookie ПОТЕРЯНА') + ' cs=' + cs, document.cookie || '(пусто)', has);
+      var m = document.getElementById('msg');
+      m.innerHTML = has
+        ? 'Cookie выжила ✅<small>PRG-cookie в этом WebView работает</small>'
+        : 'Cookie ПОТЕРЯНА ❌<small>вероятная причина потерь на iOS (PRG)</small>';
+      document.body.style.background = has ? '#0a7d2c' : '#c92a2a';
+    }
+  </script>
+</body>
+</html>

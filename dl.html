@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Deeplink test loader</title>
+  <script src="config.js"></script>
+  <script src="harness.js"></script>
+  <style>body{margin:0;background:#000}#container{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff}</style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    var mode = getParam('mode', 'complex');
+    var bridge = getParam('bridge', mode === 'inline' ? 'inline' : 'async');
+    var offerUrl = 'dl-offer.html?bridge=' + bridge + '&delay=' + getParam('delay', '1500');
+    beacon('loader:start mode=' + mode);
+    if (mode === 'redirect') {
+      beacon('loader:redirect-mode (без iframe, top-level offer)');
+      window.location.replace(offerUrl);
+    } else {
+      var h = document.getElementById('container');
+      window.addEventListener('message', function (e) {
+        if (!e.data) return;
+        var u = e.data.url || e.data.u;
+        if (!u || !/^(https?|tg|tel|sms|intent|market|whatsapp):/i.test(u)) return;
+        if (e.data.type === 'navigate' || e.data.t === 'dl') {
+          beacon('parent:navigate-TOP ' + u, null, true);
+          window.location.href = u;
+        }
+      });
+      var s = h.attachShadow({ mode: 'closed' });
+      var o = document.createElement('iframe');
+      o.src = offerUrl;
+      o.style.cssText = 'width:100%;height:100%;border:none;background:#fff';
+      o.addEventListener('load', function () { beacon('loader:offer-iframe-onload', null, true); });
+      s.appendChild(o);
+      beacon('loader:offer-iframe-appended (closed Shadow DOM) mode=' + mode);
+    }
+  </script>
+</body>
+</html>
