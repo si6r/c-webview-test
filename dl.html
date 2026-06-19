@@ -13,7 +13,8 @@
   <script>
     var mode = getParam('mode', 'complex');
     var bridge = getParam('bridge', mode === 'inline' ? 'inline' : mode === 'fix' ? 'sync' : 'async');
-    var offerUrl = 'dl-offer.html?bridge=' + bridge + '&delay=' + getParam('delay', '1500');
+    var cta = getParam('cta', '');
+    var offerUrl = 'dl-offer.html?bridge=' + bridge + '&delay=' + getParam('delay', '1500') + (cta ? '&cta=' + encodeURIComponent(cta) : '');
     beacon('loader:start mode=' + mode);
     if (mode === 'redirect') {
       beacon('loader:redirect-mode (без iframe, top-level offer)');

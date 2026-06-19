@@ -43,6 +43,8 @@
       }
       beacon('bridge-sync:inline-ready (no external, sync top-nav) inFrame=' + inFrame, null, true);
     }
+    var ctaUrl = getParam('cta', '');
+    if (ctaUrl) { document.getElementById('cta').setAttribute('href', ctaUrl); beacon('offer:cta-override ' + ctaUrl); }
     document.getElementById('cta').addEventListener('click', function () { beacon('offer:cta-tapped'); });
   </script>
 </body>
